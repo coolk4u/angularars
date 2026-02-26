@@ -1,7 +1,0 @@
-{
-  "name": "ars-dealer-portal",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular-standalone"
-}
