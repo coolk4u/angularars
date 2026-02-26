@@ -1,0 +1,276 @@
+<!-- src/app/pages/dashboard/dashboard.page.html -->
+<ion-split-pane contentId="main-content" when="lg">
+
+  <!-- ── Sidebar ── -->
+  <ion-menu contentId="main-content" type="overlay" menuId="main-menu">
+    <ion-content class="sidebar-content">
+
+      <!-- Logo -->
+      <div class="sidebar-logo">
+        <img src="assets/ars-logo.png" alt="ARS Green Steel" />
+      </div>
+
+      <!-- Nav Items -->
+      <nav class="sidebar-nav">
+        @for (item of navItems; track item.route) {
+          <a
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            class="nav-item"
+          >
+            <ion-icon [name]="item.icon" class="nav-icon"></ion-icon>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+      </nav>
+
+    </ion-content>
+  </ion-menu>
+
+  <!-- ── Main Content ── -->
+  <div class="ion-page" id="main-content">
+
+    <!-- Top Header -->
+    <ion-header class="app-header">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button class="menu-btn"></ion-menu-button>
+          <img src="assets/ars-logo.png" alt="ARS" class="header-logo" />
+        </ion-buttons>
+
+        <div slot="end" class="header-right">
+          <!-- Notification Bell -->
+          <div class="notif-btn">
+            <ion-icon name="notifications-outline"></ion-icon>
+            @if (notifCount > 0) {
+              <span class="notif-badge">{{ notifCount }}</span>
+            }
+          </div>
+
+          <!-- User Dropdown -->
+          <div class="user-menu-wrapper" (click)="showUserMenu = !showUserMenu">
+            <span class="dealer-name">{{ auth.currentUser()?.dealerName || 'AJ Traders' }}</span>
+            <div class="avatar">
+              <ion-icon name="person-outline"></ion-icon>
+            </div>
+            <ion-icon name="chevron-down-outline" class="chevron"></ion-icon>
+          </div>
+
+          <!-- Dropdown -->
+          @if (showUserMenu) {
+            <div class="user-dropdown">
+              <a class="dropdown-item" (click)="showUserMenu = false">
+                <ion-icon name="person-outline"></ion-icon>
+                Account Details
+              </a>
+              <a class="dropdown-item danger" (click)="logout()">
+                <ion-icon name="log-out-outline"></ion-icon>
+                Log Out
+              </a>
+            </div>
+          }
+        </div>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="dashboard-content">
+
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-text">
+          <p class="hero-sub">STEEL THAT TRULY FIGHTS</p>
+          <h2 class="hero-headline">CORROSION</h2>
+          <div class="hero-product">
+            <span class="product-badge crs">CRS</span>
+            <span class="product-badge d550">550D</span>
+          </div>
+          <p class="hero-label">CRS - CORROSION RESISTANT STEEL</p>
+        </div>
+      </div>
+
+      <!-- Sales Target Card -->
+      <div class="section-grid">
+
+        <!-- Target Card -->
+        <div class="target-card">
+          <div class="target-header">
+            <span class="win-badge">Win a Foreign Trip</span>
+          </div>
+          <div class="target-body">
+            <div class="target-info">
+              <p class="target-label">Total Sales</p>
+              <p class="target-value">₹18.5L<span class="target-goal">/20.0L</span></p>
+            </div>
+            <div class="donut-wrapper">
+              <svg viewBox="0 0 80 80" class="donut-svg">
+                <circle cx="40" cy="40" r="32" fill="none" stroke="#E8EEF8" stroke-width="8"/>
+                <circle cx="40" cy="40" r="32" fill="none" stroke="#1B3F7A" stroke-width="8"
+                        stroke-dasharray="160.8 201"
+                        stroke-dashoffset="50"
+                        stroke-linecap="round"
+                        transform="rotate(-90 40 40)"/>
+              </svg>
+              <span class="donut-label">80%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stat Cards Grid -->
+        <div class="stats-grid">
+          @for (card of statCards; track card.label) {
+            <div class="stat-card">
+              <div class="stat-info">
+                <p class="stat-label">{{ card.label }}</p>
+                <p class="stat-value">{{ card.value }}</p>
+              </div>
+              <div class="stat-icon" [style.background]="card.iconBg">
+                <ion-icon [name]="card.icon" [style.color]="card.iconColor"></ion-icon>
+              </div>
+            </div>
+          }
+        </div>
+
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <p class="section-title">Quick Actions</p>
+        <button class="action-btn">
+          <ion-icon name="add-circle-outline"></ion-icon>
+          Create Contract Order
+        </button>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="charts-grid">
+
+        <div class="chart-card">
+          <h3 class="chart-title">Monthly Breakdown of Contract Orders</h3>
+          <div class="bar-chart">
+            <div class="y-axis">
+              <span>500</span><span>150</span><span>100</span><span>50</span><span>0</span>
+            </div>
+            <div class="bars-area">
+              <div class="bar-group">
+                <div class="bar" style="height: 68px; background: #1B3F7A;"></div>
+                <span class="bar-label">Jan</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar" style="height: 88px; background: #1B3F7A;"></div>
+                <span class="bar-label">Feb</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar" style="height: 8px; background: #D8DEE9;"></div>
+                <span class="bar-label">Mar</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar" style="height: 8px; background: #D8DEE9;"></div>
+                <span class="bar-label">Apr</span>
+              </div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-dot" style="background:#1B3F7A"></span>
+            <span>Jan ₹120</span>
+            <span class="legend-dot" style="background:#1B3F7A"></span>
+            <span>Feb ₹120</span>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="chart-title">Monthly Breakdown of Dispatch Orders</h3>
+          <div class="bar-chart">
+            <div class="y-axis">
+              <span>500</span><span>150</span><span>100</span><span>50</span><span>0</span>
+            </div>
+            <div class="bars-area">
+              <div class="bar-group">
+                <div class="bar-pair">
+                  <div class="bar" style="height: 88px; background: #27AE60;"></div>
+                  <div class="bar" style="height: 44px; background: #06D6A0;"></div>
+                </div>
+                <span class="bar-label">Jan</span>
+              </div>
+              <div class="bar-group">
+                <div class="bar-pair">
+                  <div class="bar" style="height: 48px; background: #27AE60;"></div>
+                  <div class="bar" style="height: 20px; background: #06D6A0;"></div>
+                </div>
+                <span class="bar-label">Feb</span>
+              </div>
+            </div>
+          </div>
+          <div class="chart-legend">
+            <span class="legend-dot" style="background:#27AE60"></span><span>Orders</span>
+            <span class="legend-dot" style="background:#06D6A0"></span><span>Invoices</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Orders Table -->
+      <div class="orders-section">
+        <!-- Tabs -->
+        <div class="tab-bar">
+          <button class="tab-btn" [class.active]="activeTab === 'primary'"   (click)="activeTab = 'primary'">  Primary Orders  </button>
+          <button class="tab-btn" [class.active]="activeTab === 'secondary'" (click)="activeTab = 'secondary'">Secondary Orders</button>
+        </div>
+
+        <div class="orders-grid">
+
+          <!-- Contract Orders -->
+          <div class="table-card">
+            <h3 class="table-title">Recent Contract Orders</h3>
+            <table class="ars-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th><th>Dealer</th><th>Value</th><th>Tonnage</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (o of contractOrders; track o.dealer) {
+                  <tr>
+                    <td class="order-id">{{ o.id }}</td>
+                    <td>{{ o.dealer }}</td>
+                    <td>{{ o.value }}</td>
+                    <td>{{ o.tonnage }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Dispatched Orders -->
+          <div class="table-card">
+            <h3 class="table-title">Recent Dispatched Orders</h3>
+            <table class="ars-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th><th>Dealer</th><th>Value</th><th>Tonnage</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (o of dispatchedOrders; track o.dealer) {
+                  <tr>
+                    <td class="order-id">{{ o.id }}</td>
+                    <td>{{ o.dealer }}</td>
+                    <td>{{ o.value }}</td>
+                    <td>{{ o.tonnage }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </ion-content>
+  </div>
+
+</ion-split-pane>
+
+<!-- Click-outside overlay for user menu -->
+@if (showUserMenu) {
+  <div class="overlay" (click)="showUserMenu = false"></div>
+}
